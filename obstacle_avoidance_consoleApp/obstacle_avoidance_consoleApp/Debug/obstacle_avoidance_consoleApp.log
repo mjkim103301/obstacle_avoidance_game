@@ -1,0 +1,4 @@
+﻿  소스.cpp
+C:\Users\user\git\obstacle_avoidance_game\obstacle_avoidance_consoleApp\obstacle_avoidance_consoleApp\mcd_engine.h(259,10): warning C4101: 't' :참조되지 않은 지역 변수입니다.
+C:\Users\user\git\obstacle_avoidance_game\obstacle_avoidance_consoleApp\obstacle_avoidance_consoleApp\mcd_engine.h(321): warning C4715: 'getImageSize': 모든 제어 경로에서 값을 반환하지는 않습니다.
+  obstacle_avoidance_consoleApp.vcxproj -> C:\Users\user\git\obstacle_avoidance_game\obstacle_avoidance_consoleApp\Debug\obstacle_avoidance_consoleApp.exe
