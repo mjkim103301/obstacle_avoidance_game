@@ -3,13 +3,14 @@
 #include"mcd_engine.h"
 using namespace std;
 
-int nowY = 100, nowX = 400;
+int nowY = 100, nowX = 400;//주인공 캐릭터 시작위치
+
 void init() {
 
-	initWindow("후후후", 640, 480);//콘솔창 사이즈 지정
+	initWindow("장애물 피하기 게임", 640, 480);//콘솔창 사이즈 지정
 	addImage(0, "resources\\back.bmp", false);//배경이미지 등록
-	addImage(1, "resources\\char.bmp", true);//캐릭터 이미지 등록
-	addImage(2, "resources\\char2.bmp", true);//캐릭터 이미지 등록
+	addImage(1, "resources\\char.bmp", true);//주인공 캐릭터 이미지 등록
+	addImage(2, "resources\\char2.bmp", true);//악당 캐릭터 이미지 등록
 	finishAddImage();
 
 	addObject(0, 0);//오브젝트에 배경이미지 등록
@@ -21,57 +22,96 @@ void init() {
 
 	showObject(0, 0, 0, 0, 0);
 }
+//struct devilInform {
+//	int direct;
+//	int move;
+//	int devilX;
+//	int devilY;
+//	unsigned int tick;
+//};
+//devilInform inform[10];
+////direct=0->아래 1->왼쪽 2->오른쪽 3->위
+//void movingDevilRandom(devilInform inform, int id, int speed) {
+//	
+//	for (int i = 0; i < inform.move; i++) {
+//		if (isCrash(id, 1) == 1) {
+//			OutputDebugString("!");
+//		}
+//		showObject(id, inform.devilX, inform.devilY, inform.tick % 4, inform.direct);
+//		inform.devilY += speed;
+//		if (inform.devilX < 0 || inform.devilY < 0 || inform.devilX >= 640 || inform.devilY >= 480)break;
+//		Sleep(100);
+//		inform.tick++;
+//
+//	}
+//}
 
-void k_f_c(int id) {//악당이 앞으로 갔다 뒤로갔다 반복
+//악당이 랜덤으로 움직임
+void moveDevil(int id) {
 	srand(clock());
+
+	int devilY = 300, devilX = 300;//악당 캐릭터 시작위치
 	unsigned int tick = 0;
-	//int direct = 0;//0이거나 3이거나
 	int speed = 10;
-	int devilY = rand() % 500, devilX = rand() % 500;//랜덤으로 악당의 위치를 정함
+	//direct=0->아래 1->왼쪽 2->오른쪽 3->위
 	while (1) {
 		int move = rand() % 50 + 20;
 		int direct = rand() % 4;
-
-
-		//if (tick < move) {//밑으로
-		//	direct = 0;
-		//	devilY += speed;
-		//}
-		//else if(tick<move) {//위로
-		//	direct = 3;
-		//	devilY -= speed;
-		//}
-		//else {
-		//	tick = 0;
-		//	
-		//}
-
 		if (direct == 0) {//아래
 			for (int i = 0; i < move; i++) {
+				if (isCrash(id, 1) == 1) {
+					OutputDebugString("!");
+				}
+				showObject(id, devilX, devilY, tick % 4, direct);
 				devilY += speed;
-				if (devilY < 30)break;
+				if (devilX < 0 || devilY < 0 || devilX >= 640 || devilY >= 480)break;
+				Sleep(100);
+				tick++;
 
 			}
 		}
 		else if (direct == 1) {//왼쪽
 			for (int i = 0; i < move; i++) {
-				devilY += speed;
-				if (devilY < 30)break;
+				if (isCrash(id, 1) == 1) {
+					OutputDebugString("!");
+				}
+				showObject(id, devilX, devilY, tick % 4, direct);
+				devilX-= speed;
+				if (devilX < 0 || devilY < 0 || devilX >= 640 || devilY >= 480)break;
+				Sleep(100);
+				tick++;
+
 			}
 		}
 		else if (direct == 2) {//오른쪽
+			for (int i = 0; i < move; i++) {
+				if (isCrash(id, 1) == 1) {
+					OutputDebugString("!");
+				}
+				showObject(id, devilX, devilY, tick % 4, direct);
+				devilX += speed;
+				if (devilX < 0 || devilY < 0 || devilX >= 640 || devilY >= 480)break;
+				Sleep(100);
+				tick++;
 
+			}
 		}
 		else if (direct == 3) {//위
+			for (int i = 0; i < move; i++) {
+				if (isCrash(id, 1) == 1) {
+					OutputDebugString("!");
+				}
+				showObject(id, devilX, devilY, tick % 4, direct);
+				devilY -= speed;
+				if (devilX < 0 || devilY < 0 || devilX >= 640 || devilY >= 480)break;
+				Sleep(100);
+				tick++;
 
+			}
 		}
-		showObject(id, devilX, devilY, tick % 4, direct);
-		tick++;
 
-		Sleep(100);
-		if (isCrash(id, 4) == 1) {
-			OutputDebugString("!");
-		}
+
+
 	}
 }
 int main() {
@@ -80,16 +120,7 @@ int main() {
 	//미션2 캐릭터 3마리 추가하기
 	//미션3 캐릭터 움직이도록
 	//미션4 캐릭터 애니메이션 효과
-	//while (1) {
-	//	for (int y = 0; y < 4; y++) {
-	//		for (int x = 0; x < 4; x++) {
-	//			showObject(1, 100, 100, x, y);
-	//			showObject(2, 200, 100, 3, 0);
-	//			showObject(3, 300, 100, 3, 0);
-	//			Sleep(500);//1000 = 1초
-	//		}
-	//	}
-	//}
+
 	unsigned int tick = 0;
 	int flagIsMoving = 0;
 	int direct = 0;
@@ -97,8 +128,9 @@ int main() {
 
 	thread th[100];
 	for (int i = 0; i < 10; i++) {
-		th[i] = thread(k_f_c, 2 + i);//동시에 동작함
-		Sleep(30);
+		th[i] = thread(moveDevil, 2 + i);//동시에 동작함
+		
+		Sleep(20);
 	}
 
 
@@ -128,19 +160,12 @@ int main() {
 			tick = 0;
 		}
 
-
-
-		//showObject(1, 100, 100, 3, 0);
-		showObject(2, 200, 100, 3, 0);
-		showObject(3, 300, 100, 3, 0);
-		showObject(4, nowX, nowY, tick % 4, direct);
+		showObject(1, nowX, nowY, tick % 4, direct);
 
 		tick++;
 		Sleep(100);
 		flagIsMoving = 0;
 	}
-
-
 
 	while (1);
 	return 0;
